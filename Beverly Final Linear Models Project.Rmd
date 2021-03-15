@@ -1,0 +1,144 @@
+---
+title: "Linear Models Project"
+author: "beverly chigarira"
+date: "12/7/2020"
+output:
+  word_document: default
+  html_document: default
+---
+
+
+## Including Plots
+
+```{r, echo=FALSE}
+#SECTION 1 :INTRODUCTION
+#Uploading the Current Population Survey file
+#This is data from the US Department of Labor. In the data are variables : earnings, gender, age, region, education and degree
+CPS = read.csv("CPS_data.csv")
+head(CPS)
+str(CPS)
+nrow(CPS)
+```
+
+```{r, echo=FALSE}
+# Data Visualization
+# Earnings amongst gender per region
+#My main question of interest is based on this graph
+#Hypothesis: What associations are between gender and earnings
+library(ggplot2)
+ggplot(CPS, 
+       aes(x = region, 
+           fill = gender)) + 
+  geom_bar(position = position_dodge(preserve = "single"))+
+  labs(title = "Earnings per region between gender",
+       x = "Region",
+       y = "Earnings in $")
+```
+
+```{r, echo=FALSE}
+# plot earnings histograms by degree
+#To check who is paid more and how many bachelors and/high schoolers are getting these salaries
+ggplot(CPS, aes(x = education)) +
+  geom_histogram(fill = "cornflowerblue",
+                 color = "white") +
+  facet_wrap(~degree, ncol = 1) +
+  labs(title = "Earnings by degree", y="Earnings")
+```
+```{r, echo=FALSE}
+
+#checking the relationship between age and earnings
+ggplot(CPS, aes(x = age, fill=gender)) +
+  geom_histogram(fill = "yellow", 
+                 color = "black") + 
+  labs(title="Earnings by age",
+       x = "Age")
+#graph exihibits some normal distribution
+
+```
+```{r, echo=FALSE}
+#Hypothesis testing:
+#Ho: There is no relationship/association between gender and earnings
+#H1: There is a relationship/association between gender and earnings
+
+#using alpha =0.05
+```
+
+
+
+
+```{r, echo=FALSE}
+#Testing and training the data
+CPS$earnings =factor(CPS$earnings)
+CPS$gender =factor(CPS$gender)
+#Splitting data into training and testing 80% and 20%
+set.seed(1234)
+split = sample(2, nrow(CPS), replace =TRUE, prob=c(0.8,0.2))
+training = CPS[split==1,]
+testing =CPS[split ==2,]
+
+#logistics statistical modelling
+
+CPSresults =glm(earnings~gender + degree+ gender +education+region, data =training, family ="binomial")
+CPSresults
+```
+```{r, echo=FALSE}
+#The linear equation is :
+#log(p/1-p) = 42.142224 -15.328217(gender) -9.445268  (degree)+ 0.709623+ 0.007282 (regionnorth/east)-15.985829  (region south)+0.714686 (region west)
+```
+
+
+
+```{r, echo=FALSE}
+summary(CPSresults)
+```
+```{r, echo=FALSE}
+#Deductions
+#Looking at the above results specifcally the P-values, we can see that we do not have non-significant factors, that is, every variable in the statistical model somewhat influences the other. For instances, region has an effect on the earnings of an individual. Or my main focus, which is gender. Gender does show that it has a great significances on earniongs (for instance). 
+
+
+```
+
+
+
+```{r, echo=FALSE}
+
+
+```
+
+
+```{r, echo=FALSE}
+#Conclusions
+#Since F Statistic is less than F Alpha,we reject our null hypothesis  and conclude that there is a relationship and association between gender and earnings at alpha =0.05
+```
+
+```{r, echo=FALSE}
+#Additional Notes and Work
+#By looking at the bivarient bar graph between males and females at the graph above, we can even deduce that males are paid more than females, even when all the other variables are put into considerations
+
+#checking The validity of the model using testing data
+prediction = predict( CPSresults, testing, type ="response")
+head(prediction)
+
+```
+```{r, echo=FALSE}
+#The reason why I selected the logistics model was because it models binary data, which I was working on particulary gender , and degree variable was also binary. The other reason I chose logistic regression was because my data was dichotomous and discrete. If I was working with continuous, I would have used linear regression for instance. I did not select the ANOVA mainly because my variables of interest were catergorical and quantitative, so that test would not be befitting ANOVA works with means of 2 dinstict variables (meaning both data needs be sorely numerical).
+```
+
+
+
+
+```{r}
+#Other interest findings are how regions and earnings are associated. It seems to be that individuals residing in the South are paid more that in other regions.
+#Another one would be that
+```
+
+
+```{r}
+
+```
+
+
+```{r}
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
