@@ -1,0 +1,91 @@
+---
+title: "Linear Models Exam2"
+author: "beverly chigarira"
+date: "10/27/2020"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+```{r}
+#Question 1 a
+x = c(0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55)
+y = c(0.95, 0.95, 0.90, 0.85, 0.70, 0.65, 0.60, 0.55, 0.40)
+table = data.frame(x,y)
+table
+```
+```{r}
+plot(table, cex=1, pch =20, col = "blue", main ="Proportion of green sunfish survival per time", xlab = "Scaled Time", y = "Proportion of Survivors")
+```
+```{r}
+model = lm(y~x, data = table)
+model
+```
+```{r}
+#Question 1B
+plot(table, cex=1, pch =20, col = "blue", main ="Proportion of green sunfish survival per time", xlab = "Scaled Time", y = "Proportion of Survivors")
+abline(model, col="red")
+```
+```{r}
+#Yes the line quit fit somewhat through a point
+```
+
+
+```{r}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

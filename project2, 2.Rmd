@@ -1,0 +1,39 @@
+---
+title: "LM Exam2 q2"
+author: "beverly chigarira"
+date: "10/27/2020"
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+
+```{r}
+x = c(1996, 1997,1998,1999,2000,2001,2002,2003)
+y = c(18.5,22.6,27.2,31.2,33.0,44.9,49.4,35.0)
+the_table = data.frame(x,y)
+the_table
+```
+```{r}
+plot(y~x,col = "black",pch = 15.5, cex=1);
+
+
+
+abline(lm(y~x),col = "red")
+
+
+```
+```{r}
+#Question 2
+#the_table
+f1<- function(x)
+  {
+  return (-0.1422*x^2+2.892*x+35.872)
+}
+curve(expr = f1, from=1996, to =2003, col = "green")
+
+# the curve did not come out so I am drawing and not using R
+
+```
+
+

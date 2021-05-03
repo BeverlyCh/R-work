@@ -1,0 +1,304 @@
+---
+title: "homework7"
+author: "beverly chigarira"
+date: "11/11/2020"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r}
+#Question 1a. Creating matrices to create the transformation for each coded variable from the given table
+
+#y = xt
+
+x = cbind("x1", "x2", "x3", "x4") #x
+x
+matrixy = cbind(50,70,10,20,1,2,100,200)
+y =t(matrixy)
+y #y
+
+tmatrix = cbind(c(-1,0,0,0),c(1,0,0,0),c(0,-1,0,0),c(0,1,0,0),c(0,0,-1,0),c(0,0,1,0),c(0,0,0,-1),c(0,0,0,1)) #t
+tmatrix
+```
+```{r}
+#Question 1b. Fitting the linear model
+# model-> y = B0 + B1X1 + B2X2 + B3X3+ B4X4 + E
+X = cbind(c(rep(1,16)),c(-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1),c(-1,-1,-1,-1,1,1,1,1,-1,-1,-1,-1,1,1,1,1),c(rep(-1,1),1),c(1,1,-1,-1,1,1,-1,-1,1,1,-1,-1,1,1,-1,-1))
+print("X")
+X
+matrixY =cbind(22.2,24.5,24.4,25.9,19.4,24.1,25.2,28.4,22.1,19.6,23.5,16.5,14.2,12.7,19.3,16.0)
+Y =t(matrixY) 
+print("Y")
+Y
+
+alphamatrix = cbind(1,-1,1,-1,1)
+alpha =t(alphamatrix)
+alpha
+```
+
+```{r}
+
+beta_hat= solve(t(X)%*%X)%*%(t(X)%*%Y)
+beta_hat
+```
+```{r}
+sse = (t(Y)%*%Y)-t(beta_hat)%*%(t(X)%*%Y)
+sse
+
+```
+```{r}
+s=sqrt(sse/(16-3))
+s
+
+```
+
+```{r}
+#Therefore the fitted line is, using the calculated Beta_hat values is:
+#Y(hat) = 21.1 - 3.14x - 1.21x^2 - 0.163x^3 - 1.27x^4
+```
+
+```{r}
+#Question 1C.Hypothesis test for B1=0, B2=0, B3=0, B4=0
+
+#Ho: B1 = 0
+#Ha: B1 not equal 0
+#B1 = 21.2/(s*sqrt(t(alpha)%*%solve(t(X)%*%X)%*%alpha))
+#B1
+```
+
+```{r}
+
+#to find SSE for reduced model
+
+print("XB1")
+XB1=cbind(c(-1,-1,-1,-1,-1,-1,-1,-1,1,1,1,1,1,1,1,1))
+XB1
+
+print("YB1")
+Y=cbind(c(22.2,24.5,24.4,25.9,19.4,24.1,25.2,28.4,22.1,19.6,23.5,16.5,14.2,12.7,19.3,16.0))
+Y
+
+#sse_=t(Y)%*%Y-t(beta_hat)%*%t(X)%*%Y
+#sse_c
+#print("beta_hat")
+## [1] "beta_hat"
+beta_hat1=solve(t(XB1)%*%XB1)%*%(t(XB1)%*%Y)
+beta_hat1
+
+print("sse_r")
+
+sse_r1=t(Y)%*%Y-t(beta_hat1)%*%t(XB1)%*%Y
+sse_r1
+
+#To find F statistic
+k=4 # k is the number of independent variables in the complete model.
+g=3 # g is the number of variables in the reduced model.
+n=16 # n is the number of observations.
+print("F_Statistic")
+## [1] "F_Statistic"
+F_statistic=((sse_r1-sse)/(k-g))/(sse/(n-k-1))
+F_statistic
+
+#the F_critical value is given by "qf(1-alpha,numerator degree of freedom, de
+#nominator degree of freedom)
+print("F_alpha")
+
+F_alpha=qf(1-0.01,k-g,n-k-1)
+F_alpha
+
+```
+```{r}
+#Since the F_statistic is greater than the F_alpha, we fail to reject null hypothesis at alpha=0.01 and conclude that Beta_hat1 is not equal to 0
+```
+
+```{r}
+#Question 1C.Hypothesis test for B1=0, B2=0, B3=0, B4=0
+
+#Ho: B2 = 0
+#Ha: B2 not equal 0
+#B1 = 21.2/(s*sqrt(t(alpha)%*%solve(t(X)%*%X)%*%alpha))
+#B1
+#to find SSE for reduced model
+print("XB2")
+XB2=cbind(c(-1,-1,-1,-1,1,1,1,1,-1,-1,-1,-1,1,1,1,1))
+XB2
+
+print("YB2")
+Y=cbind(c(22.2,24.5,24.4,25.9,19.4,24.1,25.2,28.4,22.1,19.6,23.5,16.5,14.2,12.7,19.3,16.0))
+Y
+
+#sse_=t(Y)%*%Y-t(beta_hat)%*%t(X)%*%Y
+#sse_c
+#print("beta_hat")
+## [1] "beta_hat"
+beta_hat2=solve(t(XB2)%*%XB2)%*%(t(XB2)%*%Y)
+beta_hat2
+
+print("sse_r2")
+
+sse_r2=t(Y)%*%Y-t(beta_hat2)%*%t(XB2)%*%Y
+sse_r2
+
+#To find F statistic
+k=4 # k is the number of independent variables in the complete model.
+g=3 # g is the number of variables in the reduced model.
+n=16 # n is the number of observations.
+print("F_Statistic")
+## [1] "F_Statistic"
+F_statistic2=((sse_r2-sse)/(k-g))/(sse/(n-k-1))
+F_statistic2
+
+#the F_critical value is given by "qf(1-alpha,numerator degree of freedom, de
+#nominator degree of freedom)
+print("F_alpha")
+
+F_alpha2=qf(1-0.01,k-g,n-k-1)
+F_alpha2
+
+```
+
+```{r}
+#Since the F_statistic is greater than the F_alpha, we fail to reject null hypothesis at alpha=0.01 and conclude that Beta_hat2 is not equal to 0
+```
+
+```{r}
+#Question 1C.Hypothesis test for B1=0, B2=0, B3=0, B4=0
+
+#Ho: B3 = 0
+#Ha: B3 not equal 0
+
+#to find SSE for reduced model
+print("XB3")
+XB3=cbind(c(-1,1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,1,-1,1))
+XB3
+
+print("YB3")
+Y=cbind(c(22.2,24.5,24.4,25.9,19.4,24.1,25.2,28.4,22.1,19.6,23.5,16.5,14.2,12.7,19.3,16.0))
+Y
+
+#sse_=t(Y)%*%Y-t(beta_hat)%*%t(X)%*%Y
+#sse_c
+#print("beta_hat")
+## [1] "beta_hat"
+beta_hat3=solve(t(XB3)%*%XB3)%*%(t(XB3)%*%Y)
+beta_hat3
+
+print("sse_r3")
+
+sse_r3=t(Y)%*%Y-t(beta_hat3)%*%t(XB3)%*%Y
+sse_r3
+
+#To find F statistic
+k=4 # k is the number of independent variables in the complete model.
+g=3 # g is the number of variables in the reduced model.
+n=16 # n is the number of observations.
+print("F_Statistic")
+## [1] "F_Statistic"
+F_statistic3=((sse_r3-sse)/(k-g))/(sse/(n-k-1))
+F_statistic3
+
+#the F_critical value is given by "qf(1-alpha,numerator degree of freedom, de
+#nominator degree of freedom)
+print("F_alpha")
+
+F_alpha3=qf(1-0.01,k-g,n-k-1)
+F_alpha3
+```
+
+```{r}
+#Since the F_statistic is greater than the F_alpha, we fail to reject null hypothesis at alpha=0.01 and conclude that Beta_hat3 is not equal to 0
+```
+
+```{r}
+#Question 1C.Hypothesis test for B1=0, B2=0, B3=0, B4=0
+
+#Ho: B4 = 0
+#Ha: B4 not equal 0
+#to find SSE for reduced model
+print("XB4")
+XB4=cbind(c(1,1,-1,-1,1,1,-1,-1,1,1,-1,-1,1,1,-1,-1))
+XB4
+
+print("YB4")
+Y=cbind(c(22.2,24.5,24.4,25.9,19.4,24.1,25.2,28.4,22.1,19.6,23.5,16.5,14.2,12.7,19.3,16.0))
+Y
+
+#sse_=t(Y)%*%Y-t(beta_hat)%*%t(X)%*%Y
+#sse_c
+#print("beta_hat")
+## [1] "beta_hat"
+beta_hat4=solve(t(XB4)%*%XB4)%*%(t(XB4)%*%Y)
+beta_hat4
+
+print("sse_r4")
+
+sse_r4=t(Y)%*%Y-t(beta_hat4)%*%t(XB4)%*%Y
+sse_r4
+
+#To find F statistic
+k=4 # k is the number of independent variables in the complete model.
+g=3 # g is the number of variables in the reduced model.
+n=16 # n is the number of observations.
+print("F_Statistic")
+## [1] "F_Statistic"
+F_statistic4=((sse_r4-sse)/(k-g))/(sse/(n-k-1))
+F_statistic4
+
+#the F_critical value is given by "qf(1-alpha,numerator degree of freedom, de
+#nominator degree of freedom)
+print("F_alpha")
+
+F_alpha4=qf(1-0.01,k-g,n-k-1)
+F_alpha4
+
+```
+```{r}
+#Since the F_statistic is greater than the F_alpha, we fail to reject null hypothesis at alpha=0.01 and conclude that Beta_hat4 is not equal to 0
+```
+
+
+
+```{r}
+#Question 2
+#Ho: Mean A = MeanB = MeanC = MeanD
+#H1: At least one mean is different from others
+#Level of significance =0.05
+A =c(1.65,1.72,1.50,1.37,1.60)
+B =c(1.70,1.85,1.46,2.05,1.80)
+C =c(1.40,1.75,1.38,1.65,1.55)
+D =c(2.10,1.95,1.65,1.88,2.00)
+
+Combined_data =data.frame(cbind(A,B,C,D))
+Stacked_data = stack(Combined_data)
+```
+
+```{r}
+Anova_results = aov(values~ind, data = Stacked_data)
+Anova_results
+summary(Anova_results)
+```
+
+
+```{r}
+#Since P-value is 0.0107,which is less than the given significance level 0.05, so we reject the null hypothesis and conclude that there is sufficient evidence to indicate a difference in the mean amount of effluents discharged by the 4 plants at 0.05 significance level.
+```
+
+
+```{r}
+?replications
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

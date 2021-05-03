@@ -1,0 +1,113 @@
+---
+title: "Linear H6"
+author: "beverly chigarira"
+date: "10/20/2020"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+```{r}
+temperature = c(-262.0,-265.0,-256.0,-267.0,-270.0,-272.0,-272.4,-272.7,-272.8,-272.9)
+proportion = c(0.315,0.202,0.204,0.620,0.715,0.935,0.957,0.906,0.985,0.987)
+table = data.frame(temperature, proportion)
+table
+```
+
+```{r}
+linear_model=lm(formula = proportion~temperature, data =table)
+linear_model
+```
+```{r}
+plot(table, cex = 1, pch=20, col ="magenta", main = "Temperature versus Proportion",xlab="C Temperature(x)", ylab = "Proportion of Impurity Passing Through Helium (y)")
+abline(linear_model, col ="green")
+```
+```{r}
+#Question 1b
+#Summary of the linear model
+summary(linear_model)
+```
+```{r}
+#The residual (observed-expected) in this plot shows that the prediction from low to
+# 1Q was high because the values are negative, and that from the median to max, the 
+#prediction level was low
+```
+```{r}
+#Question 1 C
+#Testing Hypothesis at alpha =.01 level of significance
+#H0: B1 = 0
+#H1: B1<0
+#Using the T-Test
+
+mean(temperature)
+t.test(temperature,proportion = NULL, mu=0, alternative = "less", paired = FALSE, conf.level = 0.99)
+```
+```{r}
+#Conclusion
+#Since P value is less that alpha(0.01), we reject H0 and conclude that B1<0
+```
+
+```{r}
+#1 D
+#Find the 95% confidence interval when the temperature is -273 degrees
+new =data.frame(temperature = -273)
+con_interval = predict(linear_model, new, interval = "confidence", level = 0.95)
+con_interval
+```
+
+```{r}
+#1 E
+#Find the 95% prediction interval for the percentage of the solid impurity passing at -273 degrees
+pred_interval = predict(linear_model,new, interval ="prediction", level = 0.95)
+pred_interval
+```
+```{r}
+library(ggplot2)
+```
+
+```{r}
+#showing the prediction region in scatterplot
+table = data.frame(temperature, proportion);
+ggplot(table, aes_(temperature, proportion))+ geom_point()+geom_smooth(mapping=aes_(temperature,proportion),
+method = lm, se = T)
+```
+```{r}
+table
+new_pred_interval =predict(linear_model,interval = "prediction", level = 0.95)
+new_pred_interval
+```
+```{r}
+#table
+```
+
+```{r}
+new_dataframe = cbind(table, new_pred_interval)
+```
+
+
+
+```{r}
+ggplot(data=new_dataframe, aes(temperature, proportion))+
+geom_point() +
+geom_line(aes(y=lwr), color = "red", linetype = "dashed")+
+geom_line(aes(y=upr), color = "red", linetype = "dashed")+
+geom_smooth(method=lm, se=TRUE)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
